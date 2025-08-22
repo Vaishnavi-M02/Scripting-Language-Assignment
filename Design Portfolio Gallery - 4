@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Portfolio Gallery</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h2 {
+      color: #003366;
+      margin-bottom: 20px;
+    }
+    .gallery {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .gallery img {
+      width: 180px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: 0.3s;
+    }
+    .gallery img:hover {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    #display {
+      margin-top: 20px;
+      height: 400px;
+    }
+    #display img {
+      width: 0;
+      height: 0;
+      opacity: 0;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    button {
+      background: #003366;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #0055a5;
+    }
+  </style>
+</head>
+<body>
+  <h2>My Design Portfolio</h2>
+  <div class="gallery">
+    <img src="https://tse1.mm.bing.net/th/id/OIP.ADjoUOy8GMryL7mgRCfvnwHaE3?pid=Api&P=0&h=180" alt="DELL LAPTOP">
+    <img src="https://m.media-amazon.com/images/I/51Vbi6ji3-L.jpg" alt="HP LAPTOP">
+    <img src="https://tse2.mm.bing.net/th/id/OIP.YcEitccWeOlrl2pPWHm3QQHaDt?pid=Api&P=0&h=180" alt="I LAPTOP">
+    <img src="https://tse1.mm.bing.net/th/id/OIP.mv_Axg_cZhk4lde3ZbVGQAHaG8?pid=Api&P=0&h=180" alt="IPAD">
+    <img src="https://tse2.mm.bing.net/th/id/OIP._AR94VTNHbuGfh9IWV1lpgHaFp?pid=Api&P=0&h=180" alt="INFINIX PHONE">
+    <img src="https://tse1.mm.bing.net/th/id/OIP.1oteRLM5eJuXe4-eFUzcrwHaEK?pid=Api&P=0&h=180" alt="VICTUS">
+  </div>
+  <div id="display">
+    <img id="highlighted" src="" alt="Selected Design">
+  </div>
+  <button id="showImage">Highlight Selected Image</button>
+
+  <script>
+    let selectedImage = "";
+
+    $(".gallery img").click(function() {
+      selectedImage = $(this).attr("src");
+      $("#highlighted").attr("src", selectedImage).css({width:0, height:0, opacity:0});
+    });
+
+    $("#showImage").click(function() {
+      if (selectedImage !== "") {
+        $("#highlighted").animate(
+          {width:"600px", height:"400px", opacity:1}, 
+          1000
+        );
+      } else {
+        alert("Please select an image from the gallery first.");
+      }
+    });
+  </script>
+</body>
+</html>
