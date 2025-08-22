@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>University Course Registration</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #003366;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .container {
+      width: 85%;
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #003366;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input, select, button, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+    button {
+      background: #003366;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0055a5;
+    }
+    .course-card {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    .success {
+      background: #e6ffe6;
+      color: green;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>University Course Registration System</header>
+  <div class="container">
+    <h2>Register for a Course</h2>
+    <form id="registrationForm">
+      <label for="studentName">Student Name</label>
+      <input type="text" id="studentName" placeholder="Enter your full name">
+      <label for="studentID">Student ID</label>
+      <input type="text" id="studentID" placeholder="Enter student ID (e.g., S1234)">
+      <label for="course">Select Course</label>
+      <select id="course">
+        <option value="">-- Choose a Course --</option>
+        <option value="PY101" data-capacity="3" data-prereq="">PY101 - Python Basics</option>
+        <option value="PY201" data-capacity="2" data-prereq="PY101">PY201 - Advanced Python</option>
+        <option value="JS101" data-capacity="3" data-prereq="">JS101 - JavaScript Essentials</option>
+        <option value="JS201" data-capacity="2" data-prereq="JS101">JS201 - Advanced JavaScript</option>
+        <option value="JA101" data-capacity="3" data-prereq="">JA101 - Java Fundamentals</option>
+        <option value="JA201" data-capacity="2" data-prereq="JA101">JA201 - Java OOP Concepts</option>
+      </select>
+      <label for="notes">Additional Notes</label>
+      <textarea id="notes" placeholder="Any additional info..."></textarea>
+      <button type="submit">Register</button>
+      <p class="error" id="errorMsg"></p>
+      <p class="success" id="successMsg">✅ Registration Successful!</p>
+    </form>
+  </div>
+  <div class="container">
+    <h2>Available Courses</h2>
+    <div class="course-card"><strong>PY101 - Python Basics</strong><p>Introduction to Python programming for beginners.</p><p><b>Seats Left:</b> <span id="cap-PY101">3</span></p></div>
+    <div class="course-card"><strong>PY201 - Advanced Python</strong><p>Deep dive into Python libraries and OOP concepts. <b>Prerequisite:</b> PY101</p><p><b>Seats Left:</b> <span id="cap-PY201">2</span></p></div>
+    <div class="course-card"><strong>JS101 - JavaScript Essentials</strong><p>Learn the basics of JavaScript for web development.</p><p><b>Seats Left:</b> <span id="cap-JS101">3</span></p></div>
+    <div class="course-card"><strong>JS201 - Advanced JavaScript</strong><p>Advanced JS including ES6, async, and DOM manipulation. <b>Prerequisite:</b> JS101</p><p><b>Seats Left:</b> <span id="cap-JS201">2</span></p></div>
+    <div class="course-card"><strong>JA101 - Java Fundamentals</strong><p>Learn Java basics for beginners.</p><p><b>Seats Left:</b> <span id="cap-JA101">3</span></p></div>
+    <div class="course-card"><strong>JA201 - Java OOP Concepts</strong><p>Learn advanced object-oriented programming in Java. <b>Prerequisite:</b> JA101</p><p><b>Seats Left:</b> <span id="cap-JA201">2</span></p></div>
+  </div>
+  <script>
+    const form = document.getElementById("registrationForm");
+    const errorMsg = document.getElementById("errorMsg");
+    const successMsg = document.getElementById("successMsg");
+    let courseSeats = {PY101:3,PY201:2,JS101:3,JS201:2,JA101:3,JA201:2};
+    let completedCourses = ["PY101","JS101","JA101"];
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      let name = document.getElementById("studentName").value.trim();
+      let studentID = document.getElementById("studentID").value.trim();
+      let courseSelect = document.getElementById("course");
+      let course = courseSelect.value;
+      let prereq = courseSelect.options[courseSelect.selectedIndex].getAttribute("data-prereq");
+      if (name === "" || studentID === "" || course === "") {
+        errorMsg.textContent = "⚠ Please fill all fields!";
+        successMsg.style.display = "none";
+        return;
+      }
+      if (prereq && !completedCourses.includes(prereq)) {
+        errorMsg.textContent = "⚠ You must complete " + prereq + " before registering for " + course;
+        successMsg.style.display = "none";
+        return;
+      }
+      if (courseSeats[course] <= 0) {
+        errorMsg.textContent = "⚠ Sorry, " + course + " is fully booked.";
+        successMsg.style.display = "none";
+        return;
+      }
+      courseSeats[course]--;
+      document.getElementById("cap-" + course).textContent = courseSeats[course];
+      errorMsg.textContent = "";
+      successMsg.style.display = "block";
+      form.reset();
+    });
+  </script>
+</body>
+</html>
