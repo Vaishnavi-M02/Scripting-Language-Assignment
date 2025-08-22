@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Four Digit Number Validation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 320px;
+    }
+    h2 {
+      color: #003366;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      text-align: center;
+    }
+    button {
+      background: #003366;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0055a5;
+    }
+    p {
+      margin-top: 15px;
+      font-size: 15px;
+    }
+    .error {
+      color: red;
+    }
+    .success {
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>4-Digit Number Validation</h2>
+    <input type="text" id="numInput" placeholder="Enter 4-digit number">
+    <button onclick="validateNumber()">Validate</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    function validateNumber() {
+      let num = document.getElementById("numInput").value.trim();
+      let result = document.getElementById("result");
+
+      if (!/^\d{4}$/.test(num)) {
+        result.textContent = "⚠ Please enter exactly 4 digits.";
+        result.className = "error";
+        return;
+      }
+
+      if (num[0] === "0") {
+        result.textContent = "⚠ First digit cannot be zero.";
+        result.className = "error";
+        return;
+      }
+
+      let isAscending = true;
+      for (let i = 0; i < num.length - 1; i++) {
+        if (num[i] >= num[i + 1]) {
+          isAscending = false;
+          break;
+        }
+      }
+
+      if (!isAscending) {
+        result.textContent = "⚠ Digits must be in ascending order.";
+        result.className = "error";
+      } else {
+        result.textContent = "✅ Valid number!";
+        result.className = "success";
+      }
+    }
+  </script>
+</body>
+</html>
